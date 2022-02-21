@@ -1,0 +1,65 @@
+{
+    "CapsuleLanding": {
+        "checkpoints": [
+            {
+                "steps": 499979,
+                "file_path": "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-499979.onnx",
+                "reward": 22.875003337860107,
+                "creation_time": 1645312654.4744384,
+                "auxillary_file_paths": [
+                    "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-499979.pt"
+                ]
+            },
+            {
+                "steps": 661097,
+                "file_path": "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-661097.onnx",
+                "reward": 28.762504160404205,
+                "creation_time": 1645315357.4031508,
+                "auxillary_file_paths": [
+                    "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-661097.pt"
+                ]
+            },
+            {
+                "steps": 971785,
+                "file_path": "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-971785.onnx",
+                "reward": 25.300004323323567,
+                "creation_time": 1645383388.2220132,
+                "auxillary_file_paths": [
+                    "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-971785.pt"
+                ]
+            },
+            {
+                "steps": 999956,
+                "file_path": "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-999956.onnx",
+                "reward": 10.975001811981201,
+                "creation_time": 1645393106.1499987,
+                "auxillary_file_paths": [
+                    "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-999956.pt"
+                ]
+            },
+            {
+                "steps": 1270088,
+                "file_path": "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-1270088.onnx",
+                "reward": 26.300004482269287,
+                "creation_time": 1645400945.2963166,
+                "auxillary_file_paths": [
+                    "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-1270088.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1270088,
+            "file_path": "results\\CapsuleLanding\\CapsuleLanding.onnx",
+            "reward": 26.300004482269287,
+            "creation_time": 1645400945.2963166,
+            "auxillary_file_paths": [
+                "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-1270088.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.28.0",
+        "torch_version": "1.7.1+cu110"
+    }
+}
