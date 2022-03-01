@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EngineController : MonoBehaviour
 {
-    private const float thrustMagnitude = 300;
+    public float thrustMagnitude = 100;
     public Rigidbody capsuleRigidbody;
     public String fireKey;
 

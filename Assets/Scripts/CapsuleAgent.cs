@@ -98,6 +98,9 @@ public class CapsuleAgent : Agent {
         // If the capsule landed, end the episode with a reward proportional to proximity to landing zone and upward orientation
         else if (Physics.Raycast(capsuleCollider.bounds.center, Vector3.down, capsuleCollider.bounds.extents.y + COLLISION_EPS))
         {
+            // TODO: symmetric engines
+            // TODO: flames
+            // TODO: closer camera (TODO: delete old camera script?)
             // TODO: reward landing on platform
             // TODO: change color according to result
             // TODO: continuos reward?
