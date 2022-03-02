@@ -229,7 +229,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8276757}
   serializedVersion: 7
-  lengthInSec: 5
+  lengthInSec: 1
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -4971,9 +4971,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9af94451a8c54214183da0e28c5f1000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireKey: Fire2
   thrustMagnitude: 70
   capsuleRigidbody: {fileID: 1435354210}
-  fireKey: Fire2
 --- !u!1 &235909249
 GameObject:
   m_ObjectHideFlags: 0
@@ -5020,9 +5020,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9af94451a8c54214183da0e28c5f1000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireKey: Fire1
   thrustMagnitude: 100
   capsuleRigidbody: {fileID: 1762060040}
-  fireKey: Fire1
 --- !u!65 &235909252
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5191,7 +5191,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 241799217}
   serializedVersion: 7
-  lengthInSec: 5
+  lengthInSec: 1
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -10064,9 +10064,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9af94451a8c54214183da0e28c5f1000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireKey: Fire2
   thrustMagnitude: 100
   capsuleRigidbody: {fileID: 1762060040}
-  fireKey: Fire2
 --- !u!65 &536333360
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10249,7 +10249,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 609783201}
   serializedVersion: 7
-  lengthInSec: 5
+  lengthInSec: 1
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -15192,9 +15192,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9af94451a8c54214183da0e28c5f1000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireKey: Fire4
   thrustMagnitude: 70
   capsuleRigidbody: {fileID: 1435354210}
-  fireKey: Fire4
 --- !u!64 &877605202
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -15528,7 +15528,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1327556648}
   serializedVersion: 7
-  lengthInSec: 5
+  lengthInSec: 1
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0
@@ -20624,9 +20624,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9af94451a8c54214183da0e28c5f1000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireKey: Fire1
   thrustMagnitude: 70
   capsuleRigidbody: {fileID: 1435354210}
-  fireKey: Fire1
 --- !u!1 &1938083890
 GameObject:
   m_ObjectHideFlags: 0
@@ -20673,9 +20673,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9af94451a8c54214183da0e28c5f1000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireKey: Fire3
   thrustMagnitude: 100
   capsuleRigidbody: {fileID: 1762060040}
-  fireKey: Fire3
 --- !u!65 &1938083893
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20784,9 +20784,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9af94451a8c54214183da0e28c5f1000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireKey: Fire4
   thrustMagnitude: 100
   capsuleRigidbody: {fileID: 1762060040}
-  fireKey: Fire4
 --- !u!65 &2064876023
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -20921,9 +20921,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9af94451a8c54214183da0e28c5f1000, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireKey: Fire3
   thrustMagnitude: 70
   capsuleRigidbody: {fileID: 1435354210}
-  fireKey: Fire3
 --- !u!33 &70456879998025511
 MeshFilter:
   m_ObjectHideFlags: 0
