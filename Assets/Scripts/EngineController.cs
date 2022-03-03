@@ -4,6 +4,7 @@ using UnityEngine;
 public class EngineController : MonoBehaviour
 {
     public String fireKey;
+    private Boolean engineFired = false;
 
     public float thrustMagnitude = 100;
     public Rigidbody capsuleRigidbody;
@@ -29,16 +30,28 @@ public class EngineController : MonoBehaviour
 
     public void Fire()
     {
-        capsuleRigidbody.AddForceAtPosition(transform.up * thrustMagnitude, transform.position, 
-                                            ForceMode.Impulse);
-        if (!flameParticleSystem.isPlaying)
-        {
-            flameParticleSystem.Play();
-        }
+        engineFired = true;
     }
 
     public void Stop()
     {
-        flameParticleSystem.Stop();
+        engineFired = false;
+    }
+
+    private void FixedUpdate()
+    {
+        if (engineFired)
+        {
+            capsuleRigidbody.AddForceAtPosition(transform.up * thrustMagnitude, transform.position,
+                                            ForceMode.Impulse);
+
+            if (!flameParticleSystem.isPlaying)
+            {
+                flameParticleSystem.Play();
+            }
+        } else
+        {
+            flameParticleSystem.Stop();
+        }
     }
 }
