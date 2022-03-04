@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4972,7 +4972,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireKey: Fire2
-  thrustMagnitude: 600
+  thrustMagnitude: 700
   capsuleRigidbody: {fileID: 1435354210}
 --- !u!1 &235909249
 GameObject:
@@ -15193,7 +15193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireKey: Fire4
-  thrustMagnitude: 600
+  thrustMagnitude: 700
   capsuleRigidbody: {fileID: 1435354210}
 --- !u!64 &877605202
 MeshCollider:
@@ -20403,6 +20403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f24cdc4d6b8a1a48bff06631b96b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionEffect: {fileID: 0}
 --- !u!114 &1762060046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20625,7 +20626,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireKey: Fire1
-  thrustMagnitude: 600
+  thrustMagnitude: 700
   capsuleRigidbody: {fileID: 1435354210}
 --- !u!1 &1938083890
 GameObject:
@@ -20922,7 +20923,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireKey: Fire3
-  thrustMagnitude: 600
+  thrustMagnitude: 700
   capsuleRigidbody: {fileID: 1435354210}
 --- !u!33 &70456879998025511
 MeshFilter:
@@ -21155,6 +21156,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f24cdc4d6b8a1a48bff06631b96b7c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionEffect: {fileID: 1121192042590650, guid: e1b08032bec16ba4eb1ae23cbd572664,
+    type: 3}
 --- !u!33 &1012100272799429853
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -21367,7 +21370,7 @@ GameObject:
   - component: {fileID: 663205548}
   m_Layer: 0
   m_Name: Leg 2
-  m_TagString: Untagged
+  m_TagString: CapsuleLeg
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21408,7 +21411,7 @@ GameObject:
   - component: {fileID: 368846495}
   m_Layer: 0
   m_Name: Leg 1
-  m_TagString: Untagged
+  m_TagString: CapsuleLeg
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21617,7 +21620,7 @@ GameObject:
   - component: {fileID: 576786331}
   m_Layer: 0
   m_Name: Leg 4
-  m_TagString: Untagged
+  m_TagString: CapsuleLeg
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22177,7 +22180,7 @@ GameObject:
   - component: {fileID: 2067176008}
   m_Layer: 0
   m_Name: Leg 3
-  m_TagString: Untagged
+  m_TagString: CapsuleLeg
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
