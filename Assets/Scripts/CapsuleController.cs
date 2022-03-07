@@ -1,93 +1,165 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class CapsuleController : MonoBehaviour
 {
-    private const float MAX_LANDING_SPEED = 5;
-    private const float RAYCAST_EPS = .1f;
+    private new Rigidbody rigidbody;
 
-    private Bounds bounds;
+    private const string LEG_TAG = "CapsuleLeg";
+    private const float MAX_LANDING_SPEED = 5;
+
+    private const int N_LEGS = 4;
+    private const string LANDING_ZONE_NAME = "LandingZone";
+    private const string GROUND_TAG = "Ground";
+    enum LandingState { None, InAir, OnGround, OnLandingZone };
+    private int[] nLegsInState = new int[Enum.GetNames(typeof(LandingState)).Length];
+
+    public GameObject floor;
 
     private bool hasExploded = false;
     public GameObject explosionEffect;
 
-    // Start is called before the first frame update
     void Start()
     {
-        ComputeBounds();
+        rigidbody = GetComponent<Rigidbody>();
+
+        InitializeLandingState();
     }
 
-    private void ComputeBounds()
+    private void InitializeLandingState()
     {
-        bounds = new Bounds();
-        Renderer[] childRenderers = GetComponentsInChildren<Renderer>();
-        foreach (var renderer in childRenderers)
-        {
-            bounds.Encapsulate(renderer.bounds);
-        }
-        Debug.Log(bounds.extents.y);
+        nLegsInState[(int)LandingState.InAir] = N_LEGS;
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (HasLanded())
-        {
-            if (IsOnLandingZone())
-            {
-                // TODO: simulation state -> landed on target
-            } else
-            {
-                // TODO: simulationstate -> landed
-            }
-        }
+        CheckInSceneBounds();
+
+        CheckLanding();
     }
 
-    private bool HasLanded()
+    private void CheckInSceneBounds()
     {
-        if (Physics.Raycast(transform.position, Vector3.down, bounds.extents.y + RAYCAST_EPS))
-        {
-            // TODO: debug
-        }
-        return false;
-    }
-    
-    private bool IsOnLandingZone()
-    {
-        RaycastHit hit;
-        Physics.Raycast(transform.position, Vector3.down, out hit);
-        return hit.collider.gameObject.name == "LandingZone";
-        // TODO: debug
-    }
+        var positionInFloor = new Vector3(transform.position.x, 0, transform.position.z);
+        var floorBounds = floor.GetComponent<Collider>().bounds;
 
-    // TODO: check if leaves simulation zone
-    private void OnCollisionEnter(Collision collision)
-    {
-        ContactPoint[] contactPoints = new ContactPoint[collision.contactCount];
-        collision.GetContacts(contactPoints);
-        foreach (var contactPoint in contactPoints)
-        {
-            // Collision with capsule body
-            if (contactPoint.thisCollider.tag != "CapsuleLeg")
-            {
-                Explode();
-            }
-        }
-
-        // Collision at high speed (checking impulse would be a more general approach, but harder to learn)
-        if (collision.relativeVelocity.magnitude > MAX_LANDING_SPEED) 
+        if (!floorBounds.Contains(positionInFloor))
         {
             Explode();
         }
     }
 
-    private void Explode() // TODO: game state -> crashed
+    private void CheckLanding()
+    {
+        if (rigidbody.IsSleeping())
+        {
+            var capsuleState = ComputeCapsuleState();
+
+            if (capsuleState == LandingState.OnLandingZone)
+            {
+                // TODO: simulation state -> landed on target
+            }
+            else if (capsuleState == LandingState.OnGround)
+            {
+                // TODO: simulation state -> landed
+            }
+        }
+    }
+
+    private LandingState ComputeCapsuleState()
+    {
+        var capsuleState = LandingState.None;
+        foreach (var landingState in (LandingState[])Enum.GetValues(typeof(LandingState)))
+        {
+            if (nLegsInState[(int)landingState] > 0)
+            {
+                capsuleState = landingState;
+                break;
+            }
+        }
+        return capsuleState;
+    }
+
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        CheckCrash(collision);
+        AddLegCollision(collision);
+    }
+
+    private void CheckCrash(Collision collision)
+    {
+        var contactPoints = new ContactPoint[collision.contactCount];
+        collision.GetContacts(contactPoints);
+        foreach (var contactPoint in contactPoints)
+        {
+            if (!IsLegContact(contactPoint))
+            {
+                Explode();
+            }
+        }
+
+        // Checking impulse would be a more general approach, but harder to learn
+        if (IsHighSpeedCollision(collision))
+        {
+            Explode();
+        }
+    }
+
+    private bool IsLegContact(ContactPoint contactPoint)
+    {
+        return contactPoint.thisCollider.tag == LEG_TAG;
+    }
+
+    private bool IsHighSpeedCollision(Collision collision)
+    {
+
+        return collision.relativeVelocity.magnitude > MAX_LANDING_SPEED;
+    }
+
+    private void AddLegCollision(Collision collision)
+    {
+        if (IsCollisionWithGround(collision))
+        {
+            var newLegState = IsCollisionWithLandingZone(collision) ? LandingState.OnLandingZone : LandingState.OnGround;
+            nLegsInState[(int)LandingState.InAir]--;
+            nLegsInState[(int)newLegState]++;
+        }
+    }
+
+    private bool IsCollisionWithGround(Collision collision)
+    {
+        return collision.gameObject.tag == GROUND_TAG;
+    }
+
+    private bool IsCollisionWithLandingZone(Collision collision)
+    {
+        return collision.gameObject.name == LANDING_ZONE_NAME;
+    }
+
+    private void Explode()
     {
         if (!hasExploded) {
             Instantiate(explosionEffect, transform.position, transform.rotation);
             Destroy(gameObject);
             hasExploded = true;
+            // TODO: game state -> crashed
+        }
+    }
+
+    private void OnCollisionExit(Collision collision)
+    {
+        RemoveLegCollision(collision);
+    }
+
+    private void RemoveLegCollision(Collision collision) {
+        if (IsCollisionWithGround(collision))
+        {
+            var previousLegState = IsCollisionWithLandingZone(collision) ? LandingState.OnLandingZone : LandingState.OnGround;
+            nLegsInState[(int)previousLegState]--;
+            nLegsInState[(int)LandingState.InAir]++;
         }
     }
 }
