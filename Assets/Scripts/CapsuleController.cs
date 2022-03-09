@@ -1,21 +1,24 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CapsuleController : MonoBehaviour
 {
-    private new Rigidbody rigidbody;
-
     private const string LEG_TAG = "CapsuleLeg";
+    private const int N_LEGS = 4;
+
     private const float MAX_LANDING_SPEED = 5;
 
-    private const int N_LEGS = 4;
     private const string LANDING_ZONE_NAME = "LandingZone";
     private const string GROUND_TAG = "Ground";
+
+    public SimulationManager simulationManager;
+
+    private new Rigidbody rigidbody;
+
     enum LandingState { None, InAir, OnGround, OnLandingZone };
     private int[] nLegsInState = new int[Enum.GetNames(typeof(LandingState)).Length];
 
+    public GameObject landingZone;
     public GameObject floor;
 
     private bool hasExploded = false;
@@ -35,8 +38,8 @@ public class CapsuleController : MonoBehaviour
 
     void FixedUpdate()
     {
+        simulationManager.UpdateDistanceToLandingZone(Vector3.Distance(transform.position, landingZone.transform.position));
         CheckInSceneBounds();
-
         CheckLanding();
     }
 
@@ -44,7 +47,6 @@ public class CapsuleController : MonoBehaviour
     {
         var positionInFloor = new Vector3(transform.position.x, 0, transform.position.z);
         var floorBounds = floor.GetComponent<Collider>().bounds;
-
         if (!floorBounds.Contains(positionInFloor))
         {
             Explode();
@@ -56,14 +58,13 @@ public class CapsuleController : MonoBehaviour
         if (rigidbody.IsSleeping())
         {
             var capsuleState = ComputeCapsuleState();
-
             if (capsuleState == LandingState.OnLandingZone)
             {
-                // TODO: simulation state -> landed on target
+                simulationManager.UpdateSimulationState(SimulationState.LandedOnLandingZone);
             }
             else if (capsuleState == LandingState.OnGround)
             {
-                // TODO: simulation state -> landed
+                simulationManager.UpdateSimulationState(SimulationState.LandedOnGround);
             }
         }
     }
@@ -145,7 +146,7 @@ public class CapsuleController : MonoBehaviour
             Instantiate(explosionEffect, transform.position, transform.rotation);
             Destroy(gameObject);
             hasExploded = true;
-            // TODO: game state -> crashed
+            simulationManager.UpdateSimulationState(SimulationState.Crashed);
         }
     }
 

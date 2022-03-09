@@ -4,7 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Shootable
+  - CapsuleLeg
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - Lighting
   - Ground
   - Postprocessing
-  - Capsule
+  - 
   - 
   - 
   - 

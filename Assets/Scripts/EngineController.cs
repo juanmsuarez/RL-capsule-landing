@@ -11,13 +11,11 @@ public class EngineController : MonoBehaviour
     
     private ParticleSystem flameParticleSystem;
 
-    // Start is called before the first frame update
     void Start()
     {
         flameParticleSystem = GetComponentInChildren<ParticleSystem>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetAxis(fireKey) > 0)
