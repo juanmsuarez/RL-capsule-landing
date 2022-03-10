@@ -2,22 +2,49 @@
     "CapsuleLanding": {
         "checkpoints": [
             {
-                "steps": 15007,
-                "file_path": "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-15007.onnx",
-                "reward": 0.0,
-                "creation_time": 1646674306.6930556,
+                "steps": 499945,
+                "file_path": "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-499945.onnx",
+                "reward": 7.440001392364502,
+                "creation_time": 1646871750.4723494,
                 "auxillary_file_paths": [
-                    "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-15007.pt"
+                    "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-499945.pt"
+                ]
+            },
+            {
+                "steps": 999994,
+                "file_path": "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-999994.onnx",
+                "reward": 7.70000114440918,
+                "creation_time": 1646873417.6970484,
+                "auxillary_file_paths": [
+                    "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-999994.pt"
+                ]
+            },
+            {
+                "steps": 1499950,
+                "file_path": "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-1499950.onnx",
+                "reward": 7.78125125169754,
+                "creation_time": 1646875205.926689,
+                "auxillary_file_paths": [
+                    "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-1499950.pt"
+                ]
+            },
+            {
+                "steps": 1567859,
+                "file_path": "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-1567859.onnx",
+                "reward": 7.6750006675720215,
+                "creation_time": 1646875581.9747624,
+                "auxillary_file_paths": [
+                    "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-1567859.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 15007,
+            "steps": 1567859,
             "file_path": "results\\CapsuleLanding\\CapsuleLanding.onnx",
-            "reward": 0.0,
-            "creation_time": 1646674306.6930556,
+            "reward": 7.6750006675720215,
+            "creation_time": 1646875581.9747624,
             "auxillary_file_paths": [
-                "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-15007.pt"
+                "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-1567859.pt"
             ]
         }
     },

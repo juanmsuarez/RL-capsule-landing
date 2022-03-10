@@ -47,9 +47,14 @@ public class SimulationManager : MonoBehaviour
                 case SimulationState.Flying:
                     break;
 
-                case SimulationState.Crashed:
+                case SimulationState.Collided:
+                case SimulationState.LandingSpeedExceeded:
                 case SimulationState.LandedOnGround:
                 case SimulationState.LandedOnLandingZone:
+                    if (isTraining)
+                    {
+                        ShowScoreInLandingZone(simulationData.Score);
+                    }
                     UpdateSimulationState(SimulationState.Finished);
                     break;
 
@@ -88,6 +93,13 @@ public class SimulationManager : MonoBehaviour
         UpdateSimulationState(SimulationState.Flying);    
     }
 
+    
+    private void ShowScoreInLandingZone(float score)
+    {
+        float t = Mathf.InverseLerp(-1, 1, score);
+        landingZone.GetComponent<MeshRenderer>().material.color = Color.Lerp(Color.red, Color.green, t);
+    }
+
     IEnumerator RestartSimulation()
     {
         Debug.Log("Restart");
@@ -116,7 +128,8 @@ public enum SimulationState
     None,
     Starting,
     Flying,
-    Crashed,
+    Collided,
+    LandingSpeedExceeded,
     LandedOnGround,
     LandedOnLandingZone,
     Finished,
@@ -127,12 +140,17 @@ public class SimulationData
 {
     private const float FORWARD_REWARD = .1f;
     private const float STEP_PENALTY = -.05f;
-    private const float CRASH_PENALTY = -1;
+    private const float COLLISION_PENALTY = -1;
+    private const float SPEED_EXCESS_PENALTY = -.25f;
     private const float GROUND_LANDING_REWARD = .5f;
     private const float ZONE_LANDING_REWARD = .75f;
     private const float DISTANCE_REWARD_FACTOR = .25f;
 
     public SimulationState State { get; set; }
+
+    // public float Angle { get; set; }
+
+    // public float Speed { get; set; }
 
     private float previousDistanceToLandingZone;
     private float distanceToLandingZone;
@@ -148,11 +166,16 @@ public class SimulationData
     public float Score {
         get
         {
+            // float speedReward =;
+            // float angleReward =;
             float distanceReward = 1 / (1 + distanceToLandingZone); // TODO: maybe scale it up?
             return State switch
             {
+                // TODO: rem forward reward? unnecessary
+
                 SimulationState.Flying => (distanceToLandingZone < previousDistanceToLandingZone ? FORWARD_REWARD : 0) + STEP_PENALTY, // TODO: continuous reward?
-                SimulationState.Crashed => CRASH_PENALTY,
+                SimulationState.Collided => COLLISION_PENALTY, // TODO: reward % angle / positively?
+                SimulationState.LandingSpeedExceeded => SPEED_EXCESS_PENALTY, // TODO; reward % speed / positively?
                 SimulationState.LandedOnGround => GROUND_LANDING_REWARD + DISTANCE_REWARD_FACTOR * distanceReward,
                 SimulationState.LandedOnLandingZone => ZONE_LANDING_REWARD + DISTANCE_REWARD_FACTOR * distanceReward,
                 _ => 0

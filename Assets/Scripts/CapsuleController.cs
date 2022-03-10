@@ -50,6 +50,7 @@ public class CapsuleController : MonoBehaviour
         if (!floorBounds.Contains(positionInFloor))
         {
             Explode();
+            simulationManager.UpdateSimulationState(SimulationState.Collided);
         }
     }
 
@@ -96,16 +97,18 @@ public class CapsuleController : MonoBehaviour
         collision.GetContacts(contactPoints);
         foreach (var contactPoint in contactPoints)
         {
-            if (!IsLegContact(contactPoint))
+            if (!IsLegContact(contactPoint) && !hasExploded) // TODO: bool check or return or what?
             {
                 Explode();
+                simulationManager.UpdateSimulationState(SimulationState.Collided);
             }
         }
 
         // Checking impulse would be a more general approach, but harder to learn
-        if (IsHighSpeedCollision(collision))
+        if (IsHighSpeedCollision(collision) && !hasExploded)
         {
             Explode();
+            simulationManager.UpdateSimulationState(SimulationState.LandingSpeedExceeded);
         }
     }
 
@@ -146,7 +149,6 @@ public class CapsuleController : MonoBehaviour
             Instantiate(explosionEffect, transform.position, transform.rotation);
             Destroy(gameObject);
             hasExploded = true;
-            simulationManager.UpdateSimulationState(SimulationState.Crashed);
         }
     }
 
