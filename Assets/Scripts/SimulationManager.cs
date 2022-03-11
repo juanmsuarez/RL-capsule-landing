@@ -27,7 +27,9 @@ public class SimulationManager : MonoBehaviour
     private void DebugSimulationData(SimulationData simulationData)
     {
         Debug.Log("State: " + simulationData.State);
-        Debug.Log("Distance: " + simulationData.DistanceToLandingZone);
+        Debug.Log("Distance: " + simulationData.CapsuleData.Distance);
+        Debug.Log("Angle: " + simulationData.CapsuleData.Angle);
+        Debug.Log("Speed: " + simulationData.CapsuleData.Speed);
         Debug.Log("Score: " + simulationData.Score);
     }
 
@@ -47,8 +49,7 @@ public class SimulationManager : MonoBehaviour
                 case SimulationState.Flying:
                     break;
 
-                case SimulationState.Collided:
-                case SimulationState.LandingSpeedExceeded:
+                case SimulationState.Crashed:
                 case SimulationState.LandedOnGround:
                 case SimulationState.LandedOnLandingZone:
                     if (isTraining)
@@ -113,11 +114,11 @@ public class SimulationManager : MonoBehaviour
         UpdateSimulationState(SimulationState.Starting);
     }
 
-    public void UpdateDistanceToLandingZone(float distanceToLandingZone)
+    public void UpdateCapsuleData(CapsuleData capsuleData)
     {
-        if (simulationData.DistanceToLandingZone != distanceToLandingZone)
+        if (!simulationData.CapsuleData.Equals(capsuleData))
         {
-            simulationData.DistanceToLandingZone = distanceToLandingZone;
+            simulationData.CapsuleData = capsuleData.Clone();
             onSimulationDataChanged?.Invoke(simulationData);
         }
     }
@@ -128,8 +129,7 @@ public enum SimulationState
     None,
     Starting,
     Flying,
-    Collided,
-    LandingSpeedExceeded,
+    Crashed,
     LandedOnGround,
     LandedOnLandingZone,
     Finished,
@@ -138,55 +138,65 @@ public enum SimulationState
 
 public class SimulationData
 {
+    // Rewards and penalties
     private const float FORWARD_REWARD = .1f;
     private const float STEP_PENALTY = -.05f;
     private const float COLLISION_PENALTY = -1;
     private const float SPEED_EXCESS_PENALTY = -.25f;
     private const float GROUND_LANDING_REWARD = .5f;
     private const float ZONE_LANDING_REWARD = .75f;
-    private const float DISTANCE_REWARD_FACTOR = .25f;
+    private const float DISTANCE_REWARD_FACTOR = .2f;
+    private const float ANGLE_REWARD_FACTOR = .5f;
+    private const float SPEED_REWARD_FACTOR = .3f;
+
+    // Expected values
+    // TODO: used?
+    // TODO: read from env or unify in SimulationParameters ScriptableObject
+    private const float TARGET_LANDING_DISTANCE = 4;
+    private const float MAX_LANDING_DISTANCE = 40;
+    private const float TARGET_LANDING_ANGLE = 25;
+    private const float MAX_LANDING_ANGLE = 90;
+    private const float TARGET_LANDING_SPEED = 5;
+    private const float MAX_LANDING_SPEED = 15;
 
     public SimulationState State { get; set; }
 
-    // public float Angle { get; set; }
-
-    // public float Speed { get; set; }
-
-    private float previousDistanceToLandingZone;
-    private float distanceToLandingZone;
-    public float DistanceToLandingZone {
-        get => distanceToLandingZone;
+    private CapsuleData prevCapsuleData;
+    private CapsuleData capsuleData;
+    public CapsuleData CapsuleData {
+        get => capsuleData;
         set
         {
-            previousDistanceToLandingZone = distanceToLandingZone;
-            distanceToLandingZone = value;
+            prevCapsuleData = capsuleData;
+            capsuleData = value;
         }
     }
      
     public float Score {
         get
         {
-            // float speedReward =;
-            // float angleReward =;
-            float distanceReward = 1 / (1 + distanceToLandingZone); // TODO: maybe scale it up?
+            float distanceReward = Mathf.Max(1 - Mathf.Pow(capsuleData.Speed / MAX_LANDING_DISTANCE, 0.5f), -1); // TODO: scale it? use another function?
+            float angleReward = Mathf.Max(1 - Mathf.Pow(capsuleData.Speed / MAX_LANDING_ANGLE, 0.5f), -1);
+            float speedReward = Mathf.Max(1 - Mathf.Pow(capsuleData.Speed / MAX_LANDING_SPEED, 0.5f), -1);
+            Debug.Log("Distance reward: " + distanceReward);
+            Debug.Log("Angle reward: " + angleReward);
+            Debug.Log("Speed reward: " + speedReward);
             return State switch
             {
-                // TODO: rem forward reward? unnecessary
-
-                SimulationState.Flying => (distanceToLandingZone < previousDistanceToLandingZone ? FORWARD_REWARD : 0) + STEP_PENALTY, // TODO: continuous reward?
-                SimulationState.Collided => COLLISION_PENALTY, // TODO: reward % angle / positively?
-                SimulationState.LandingSpeedExceeded => SPEED_EXCESS_PENALTY, // TODO; reward % speed / positively?
-                SimulationState.LandedOnGround => GROUND_LANDING_REWARD + DISTANCE_REWARD_FACTOR * distanceReward,
-                SimulationState.LandedOnLandingZone => ZONE_LANDING_REWARD + DISTANCE_REWARD_FACTOR * distanceReward,
+                SimulationState.Flying => (capsuleData.Distance < prevCapsuleData.Distance ? FORWARD_REWARD : 0) + STEP_PENALTY, // TODO: continuous reward?
+                var x when 
+                    x == SimulationState.Crashed || 
+                    x == SimulationState.LandedOnGround || 
+                    x == SimulationState.LandedOnLandingZone => DISTANCE_REWARD_FACTOR * distanceReward + ANGLE_REWARD_FACTOR * angleReward + SPEED_REWARD_FACTOR * speedReward, // TODO: can multiply?
                 _ => 0
             };
         }
     }
 
-    public SimulationData(SimulationState state = SimulationState.None, float distanceToLandingZone = float.MinValue)
+    public SimulationData()
     {
-        this.State = state;
-        this.DistanceToLandingZone = distanceToLandingZone;
-        this.previousDistanceToLandingZone = distanceToLandingZone;
+        this.State = SimulationState.None;
+        prevCapsuleData = new CapsuleData();
+        capsuleData = new CapsuleData();
     }
 }

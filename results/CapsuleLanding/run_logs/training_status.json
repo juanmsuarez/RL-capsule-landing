@@ -2,49 +2,58 @@
     "CapsuleLanding": {
         "checkpoints": [
             {
-                "steps": 499945,
-                "file_path": "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-499945.onnx",
-                "reward": 7.440001392364502,
-                "creation_time": 1646871750.4723494,
-                "auxillary_file_paths": [
-                    "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-499945.pt"
-                ]
-            },
-            {
-                "steps": 999994,
-                "file_path": "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-999994.onnx",
-                "reward": 7.70000114440918,
-                "creation_time": 1646873417.6970484,
-                "auxillary_file_paths": [
-                    "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-999994.pt"
-                ]
-            },
-            {
                 "steps": 1499950,
                 "file_path": "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-1499950.onnx",
-                "reward": 7.78125125169754,
-                "creation_time": 1646875205.926689,
+                "reward": 8.505557166205513,
+                "creation_time": 1647010963.4076915,
                 "auxillary_file_paths": [
                     "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-1499950.pt"
                 ]
             },
             {
-                "steps": 1567859,
-                "file_path": "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-1567859.onnx",
-                "reward": 7.6750006675720215,
-                "creation_time": 1646875581.9747624,
+                "steps": 1799663,
+                "file_path": "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-1799663.onnx",
+                "reward": 4.100000858306885,
+                "creation_time": 1647012362.0425472,
                 "auxillary_file_paths": [
-                    "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-1567859.pt"
+                    "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-1799663.pt"
+                ]
+            },
+            {
+                "steps": 1999946,
+                "file_path": "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-1999946.onnx",
+                "reward": 7.987501382827759,
+                "creation_time": 1647016302.9781272,
+                "auxillary_file_paths": [
+                    "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-1999946.pt"
+                ]
+            },
+            {
+                "steps": 2242669,
+                "file_path": "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-2242669.onnx",
+                "reward": 8.57500159740448,
+                "creation_time": 1647017476.7323978,
+                "auxillary_file_paths": [
+                    "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-2242669.pt"
+                ]
+            },
+            {
+                "steps": 2384474,
+                "file_path": "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-2384474.onnx",
+                "reward": 8.460001754760743,
+                "creation_time": 1647020697.4181428,
+                "auxillary_file_paths": [
+                    "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-2384474.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 1567859,
+            "steps": 2384474,
             "file_path": "results\\CapsuleLanding\\CapsuleLanding.onnx",
-            "reward": 7.6750006675720215,
-            "creation_time": 1646875581.9747624,
+            "reward": 8.460001754760743,
+            "creation_time": 1647020697.4181428,
             "auxillary_file_paths": [
-                "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-1567859.pt"
+                "results\\CapsuleLanding\\CapsuleLanding\\CapsuleLanding-2384474.pt"
             ]
         }
     },

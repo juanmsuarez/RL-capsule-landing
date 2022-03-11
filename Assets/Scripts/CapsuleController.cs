@@ -6,7 +6,7 @@ public class CapsuleController : MonoBehaviour
     private const string LEG_TAG = "CapsuleLeg";
     private const int N_LEGS = 4;
 
-    private const float MAX_LANDING_SPEED = 5;
+    private const float MAX_LANDING_SPEED = 5; // TODO: unify with SimulationManager.SimulationData
 
     private const string LANDING_ZONE_NAME = "LandingZone";
     private const string GROUND_TAG = "Ground";
@@ -38,8 +38,13 @@ public class CapsuleController : MonoBehaviour
 
     void FixedUpdate()
     {
-        simulationManager.UpdateDistanceToLandingZone(Vector3.Distance(transform.position, landingZone.transform.position));
+        float distance = Vector3.Distance(transform.position, landingZone.transform.position);
+        float angle = Quaternion.Angle(transform.rotation, Quaternion.identity);
+        float speed = rigidbody.velocity.magnitude;
+        simulationManager.UpdateCapsuleData(new CapsuleData(distance, angle, speed));
+
         CheckInSceneBounds();
+        
         CheckLanding();
     }
 
@@ -50,7 +55,7 @@ public class CapsuleController : MonoBehaviour
         if (!floorBounds.Contains(positionInFloor))
         {
             Explode();
-            simulationManager.UpdateSimulationState(SimulationState.Collided);
+            simulationManager.UpdateSimulationState(SimulationState.Crashed);
         }
     }
 
@@ -100,7 +105,7 @@ public class CapsuleController : MonoBehaviour
             if (!IsLegContact(contactPoint) && !hasExploded) // TODO: bool check or return or what?
             {
                 Explode();
-                simulationManager.UpdateSimulationState(SimulationState.Collided);
+                simulationManager.UpdateSimulationState(SimulationState.Crashed);
             }
         }
 
@@ -108,7 +113,7 @@ public class CapsuleController : MonoBehaviour
         if (IsHighSpeedCollision(collision) && !hasExploded)
         {
             Explode();
-            simulationManager.UpdateSimulationState(SimulationState.LandingSpeedExceeded);
+            simulationManager.UpdateSimulationState(SimulationState.Crashed);
         }
     }
 
@@ -164,5 +169,33 @@ public class CapsuleController : MonoBehaviour
             nLegsInState[(int)previousLegState]--;
             nLegsInState[(int)LandingState.InAir]++;
         }
+    }
+}
+
+public class CapsuleData
+{
+    public float Distance { get; set; }
+    public float Angle { get; set; }
+    public float Speed { get; set; }
+
+    public CapsuleData(float distance = Mathf.Infinity, float angle = Mathf.Infinity, float speed = Mathf.Infinity)
+    {
+        Distance = distance;
+        Angle = angle;
+        Speed = speed;
+    }
+
+    public override bool Equals(object otherObj)
+    {
+        CapsuleData otherCapsuleData = otherObj as CapsuleData;
+        if (otherCapsuleData == null)
+            return false;
+        else
+            return Distance == otherCapsuleData.Distance && Angle == otherCapsuleData.Angle && Speed == otherCapsuleData.Speed;
+    }
+
+    public CapsuleData Clone()
+    {
+        return (CapsuleData) MemberwiseClone();
     }
 }
