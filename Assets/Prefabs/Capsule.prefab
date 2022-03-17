@@ -20783,7 +20783,7 @@ MonoBehaviour:
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
     hasUpgradedBrainParametersWithActionSpec: 1
-  m_Model: {fileID: 5022602860645237092, guid: 6f6322ccb1af7d447bd3b7398d1e6f2d, type: 3}
+  m_Model: {fileID: 5022602860645237092, guid: b6cb03dc83c199d4fa78a102f62f10fd, type: 3}
   m_InferenceDevice: 1
   m_BehaviorType: 0
   m_BehaviorName: CapsuleLanding
@@ -20814,7 +20814,6 @@ MonoBehaviour:
   - {fileID: 7475146549140367748}
   - {fileID: 7475146547350590224}
   - {fileID: 7475146548448260920}
-  landingZone: {fileID: 0}
   floor: {fileID: 0}
 --- !u!114 &7745179808229788693
 MonoBehaviour:
