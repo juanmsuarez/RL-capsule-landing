@@ -552,12 +552,12 @@ GameObject:
   - component: {fileID: 315553698}
   - component: {fileID: 315553697}
   m_Layer: 0
-  m_Name: Manual CM vcam
+  m_Name: Follow CM vcam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &315553697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -989,7 +989,7 @@ GameObject:
   - component: {fileID: 489069110}
   - component: {fileID: 489069109}
   m_Layer: 0
-  m_Name: Training (global) CM vcam
+  m_Name: Global CM vcam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1748,7 +1748,7 @@ MonoBehaviour:
   m_UpdateMethod: 2
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
-    m_Style: 1
+    m_Style: 0
     m_Time: 2
     m_CustomCurve:
       serializedVersion: 2
@@ -2154,7 +2154,7 @@ GameObject:
   - component: {fileID: 1613047581}
   - component: {fileID: 1613047580}
   m_Layer: 0
-  m_Name: Training (local) CM vcam
+  m_Name: Local CM vcam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2606,6 +2606,16 @@ PrefabInstance:
         type: 3}
       propertyPath: isTraining
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7821930720496197107, guid: 58cb798db97412f49b9a67662f51bf71,
+        type: 3}
+      propertyPath: followCamera
+      value: 
+      objectReference: {fileID: 315553697}
+    - target: {fileID: 7821930720496197107, guid: 58cb798db97412f49b9a67662f51bf71,
+        type: 3}
+      propertyPath: isUserControlled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7821930720496197107, guid: 58cb798db97412f49b9a67662f51bf71,
         type: 3}

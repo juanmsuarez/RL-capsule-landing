@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Unity.MLAgents.Policies;
 using System.Collections;
+using Cinemachine;
 
 // Simulation manager isn't a Singleton (or a ScriptableObject) because we need one instance per TrainingEnvironment
 public class SimulationManager : MonoBehaviour
@@ -17,7 +18,8 @@ public class SimulationManager : MonoBehaviour
     private SimulationData simulationData;
     public event Action<SimulationData> onSimulationDataChanged;
 
-    public Boolean isTraining;
+    public Boolean isUserControlled;
+    public CinemachineVirtualCamera followCamera;
     public Boolean isDebugging;
 
     private void Start()
@@ -59,10 +61,7 @@ public class SimulationManager : MonoBehaviour
                 case SimulationState.Crashed:
                 case SimulationState.LandedOnGround:
                 case SimulationState.LandedOnLandingZone:
-                    //if (isTraining)
-                    {
-                        ShowScoreInLandingZone(simulationData.Score);
-                    }
+                    ShowScoreInLandingZone(simulationData.Score);
                     UpdateSimulationState(SimulationState.Finished);
                     break;
 
@@ -94,11 +93,18 @@ public class SimulationManager : MonoBehaviour
         capsuleAgent.floor = floor;
 
         var behaviorParameters = capsule.GetComponent<BehaviorParameters>();
-        behaviorParameters.BehaviorType = isTraining ? BehaviorType.Default : BehaviorType.HeuristicOnly;
+        behaviorParameters.BehaviorType = !isUserControlled ? BehaviorType.Default : BehaviorType.HeuristicOnly;
+
+        if (followCamera != null)
+        {
+            followCamera.enabled = true;
+            followCamera.Follow = capsule.transform;
+            followCamera.LookAt = capsule.transform;
+        }
 
         capsule.SetActive(true);
-    
-        UpdateSimulationState(SimulationState.Flying);    
+
+        UpdateSimulationState(SimulationState.Flying);
     }
 
     
@@ -114,6 +120,12 @@ public class SimulationManager : MonoBehaviour
         if (capsule != null) {
             Destroy(capsule);
             yield return null;
+        }
+        
+        if (followCamera != null)
+        {
+            followCamera.enabled = false;
+            yield return new WaitForSeconds(3);
         }
 
         simulationData = new SimulationData();
