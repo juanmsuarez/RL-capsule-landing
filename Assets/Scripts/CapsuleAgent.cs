@@ -72,7 +72,6 @@ public class CapsuleAgent : Agent {
 
     public override void OnActionReceived(ActionBuffers actionBuffers)
     {
-        Debug.Log("Step: " + Academy.Instance.StepCount);
         var fireEngineActions = actionBuffers.DiscreteActions;
         FireEngines(fireEngineActions);
     }
@@ -91,12 +90,10 @@ public class CapsuleAgent : Agent {
 
     public void OnFeedbackReceived(SimulationData newSimulationData)
     {
-        Debug.Log("Effective reward added " + newSimulationData.Score);
         AddReward(newSimulationData.Score);
 
         if (newSimulationData.State == SimulationState.Finished)
         {
-            Debug.Log("End episode");
             EndEpisode();
         }
     }
@@ -119,7 +116,6 @@ public class CapsuleAgent : Agent {
 
     void OnDestroy()
     {
-        Debug.Log("Agent On Destroy");
         simulationManager.onSimulationDataChanged -= OnFeedbackReceived;
     }
 }

@@ -15,6 +15,7 @@ public class SimulationManager : MonoBehaviour
     private SimulationData simulationData;
     public event Action<SimulationData> onSimulationDataChanged;
     public Boolean isTraining;
+    public Boolean isDebugging;
 
     private void Start()
     {
@@ -26,11 +27,14 @@ public class SimulationManager : MonoBehaviour
 
     private void DebugSimulationData(SimulationData simulationData)
     {
-        Debug.Log("State: " + simulationData.State);
-        Debug.Log("Distance: " + simulationData.CapsuleData.Distance);
-        Debug.Log("Angle: " + simulationData.CapsuleData.Angle);
-        Debug.Log("Speed: " + simulationData.CapsuleData.Speed);
-        Debug.Log("Score: " + simulationData.Score);
+        if (isDebugging)
+        {
+            Debug.Log("State: " + simulationData.State);
+            Debug.Log("Distance: " + simulationData.CapsuleData.Distance);
+            Debug.Log("Angle: " + simulationData.CapsuleData.Angle);
+            Debug.Log("Speed: " + simulationData.CapsuleData.Speed);
+            Debug.Log("Score: " + simulationData.Score);
+        }
     }
 
     public void UpdateSimulationState(SimulationState newSimulationState)
@@ -103,9 +107,7 @@ public class SimulationManager : MonoBehaviour
 
     IEnumerator RestartSimulation()
     {
-        Debug.Log("Restart");
         if (capsule != null) {
-            Debug.Log("Destroy");
             Destroy(capsule);
             yield return null;
         }
@@ -178,9 +180,6 @@ public class SimulationData
             float distanceReward = Mathf.Max(1 - Mathf.Pow(capsuleData.Speed / MAX_LANDING_DISTANCE, 0.5f), -1); // TODO: scale it? use another function?
             float angleReward = Mathf.Max(1 - Mathf.Pow(capsuleData.Speed / MAX_LANDING_ANGLE, 0.5f), -1);
             float speedReward = Mathf.Max(1 - Mathf.Pow(capsuleData.Speed / MAX_LANDING_SPEED, 0.5f), -1);
-            Debug.Log("Distance reward: " + distanceReward);
-            Debug.Log("Angle reward: " + angleReward);
-            Debug.Log("Speed reward: " + speedReward);
             return State switch
             {
                 SimulationState.Flying => (capsuleData.Distance < prevCapsuleData.Distance ? FORWARD_REWARD : 0) + STEP_PENALTY, // TODO: continuous reward?

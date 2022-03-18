@@ -240,6 +240,7 @@ MonoBehaviour:
   landingZone: {fileID: 7821930720113033287}
   floor: {fileID: 7821930719413896237}
   isTraining: 1
+  isDebugging: 0
 --- !u!1 &7821930720754777190
 GameObject:
   m_ObjectHideFlags: 0
