@@ -6,7 +6,7 @@ public class CapsuleController : MonoBehaviour
     private const string LEG_TAG = "CapsuleLeg";
     private const int N_LEGS = 4;
 
-    private const float MAX_LANDING_SPEED = 5; // TODO: unify with SimulationManager.SimulationData
+    private const float MAX_LANDING_SPEED = 5;
 
     private const string LANDING_ZONE_NAME = "LandingZone";
     private const string GROUND_TAG = "Ground";
@@ -102,7 +102,7 @@ public class CapsuleController : MonoBehaviour
         collision.GetContacts(contactPoints);
         foreach (var contactPoint in contactPoints)
         {
-            if (!IsLegContact(contactPoint) && !hasExploded) // TODO: bool check or return or what?
+            if (!IsLegContact(contactPoint) && !hasExploded)
             {
                 Explode();
                 simulationManager.UpdateSimulationState(SimulationState.Crashed);

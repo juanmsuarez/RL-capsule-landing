@@ -159,14 +159,15 @@ public class SimulationData
     // Rewards and penalties
     private const float FORWARD_REWARD = .1f;
     private const float STEP_PENALTY = -.05f;
+
     private const float DISTANCE_REWARD_FACTOR = .2f;
     private const float ANGLE_REWARD_FACTOR = .5f;
     private const float SPEED_REWARD_FACTOR = .3f;
 
-    // Expected landing parameters
-    // TODO: read from env or unify in SimulationParameters ScriptableObject
+    // Reference parameters for calculating the landing reward
     private const float MAX_LANDING_DISTANCE = 40; // Approximate size of environment
     private const float MAX_LANDING_ANGLE = 90; // Horizontal direction
+    // TODO: unify MAX_LANDING_SPEED with CapsuleAgent.MAX_INITIAL_SPEED (move CapsuleAgent.RandomInitializeCapsule to SimulationManager?)
     private const float MAX_LANDING_SPEED = 15; // Maximum initial speed
 
     public SimulationState State { get; set; }
