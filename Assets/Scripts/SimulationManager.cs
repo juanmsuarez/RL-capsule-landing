@@ -12,8 +12,11 @@ public class SimulationManager : MonoBehaviour
     public GameObject landingZone;
     public GameObject floor;
 
+    public Gradient scoreGradient;
+
     private SimulationData simulationData;
     public event Action<SimulationData> onSimulationDataChanged;
+
     public Boolean isTraining;
     public Boolean isDebugging;
 
@@ -56,7 +59,7 @@ public class SimulationManager : MonoBehaviour
                 case SimulationState.Crashed:
                 case SimulationState.LandedOnGround:
                 case SimulationState.LandedOnLandingZone:
-                    if (isTraining)
+                    //if (isTraining)
                     {
                         ShowScoreInLandingZone(simulationData.Score);
                     }
@@ -102,7 +105,8 @@ public class SimulationManager : MonoBehaviour
     private void ShowScoreInLandingZone(float score)
     {
         float t = Mathf.InverseLerp(-1, 1, score);
-        landingZone.GetComponent<MeshRenderer>().material.color = Color.Lerp(Color.red, Color.green, t);
+        Color newColor = scoreGradient.Evaluate(t);
+        landingZone.GetComponent<MeshRenderer>().material.color = newColor;
     }
 
     IEnumerator RestartSimulation()
@@ -143,23 +147,15 @@ public class SimulationData
     // Rewards and penalties
     private const float FORWARD_REWARD = .1f;
     private const float STEP_PENALTY = -.05f;
-    private const float COLLISION_PENALTY = -1;
-    private const float SPEED_EXCESS_PENALTY = -.25f;
-    private const float GROUND_LANDING_REWARD = .5f;
-    private const float ZONE_LANDING_REWARD = .75f;
     private const float DISTANCE_REWARD_FACTOR = .2f;
     private const float ANGLE_REWARD_FACTOR = .5f;
     private const float SPEED_REWARD_FACTOR = .3f;
 
-    // Expected values
-    // TODO: used?
+    // Expected landing parameters
     // TODO: read from env or unify in SimulationParameters ScriptableObject
-    private const float TARGET_LANDING_DISTANCE = 4;
-    private const float MAX_LANDING_DISTANCE = 40;
-    private const float TARGET_LANDING_ANGLE = 25;
-    private const float MAX_LANDING_ANGLE = 90;
-    private const float TARGET_LANDING_SPEED = 5;
-    private const float MAX_LANDING_SPEED = 15;
+    private const float MAX_LANDING_DISTANCE = 40; // Approximate size of environment
+    private const float MAX_LANDING_ANGLE = 90; // Horizontal direction
+    private const float MAX_LANDING_SPEED = 15; // Maximum initial speed
 
     public SimulationState State { get; set; }
 
@@ -177,16 +173,16 @@ public class SimulationData
     public float Score {
         get
         {
-            float distanceReward = Mathf.Max(1 - Mathf.Pow(capsuleData.Speed / MAX_LANDING_DISTANCE, 0.5f), -1); // TODO: scale it? use another function?
-            float angleReward = Mathf.Max(1 - Mathf.Pow(capsuleData.Speed / MAX_LANDING_ANGLE, 0.5f), -1);
+            float distanceReward = Mathf.Max(1 - Mathf.Pow(capsuleData.Distance / MAX_LANDING_DISTANCE, 0.5f), -1);
+            float angleReward = Mathf.Max(1 - Mathf.Pow(capsuleData.Angle / MAX_LANDING_ANGLE, 0.5f), -1);
             float speedReward = Mathf.Max(1 - Mathf.Pow(capsuleData.Speed / MAX_LANDING_SPEED, 0.5f), -1);
             return State switch
             {
-                SimulationState.Flying => (capsuleData.Distance < prevCapsuleData.Distance ? FORWARD_REWARD : 0) + STEP_PENALTY, // TODO: continuous reward?
+                SimulationState.Flying => (capsuleData.Distance < prevCapsuleData.Distance ? FORWARD_REWARD : 0) + STEP_PENALTY,
                 var x when 
                     x == SimulationState.Crashed || 
                     x == SimulationState.LandedOnGround || 
-                    x == SimulationState.LandedOnLandingZone => DISTANCE_REWARD_FACTOR * distanceReward + ANGLE_REWARD_FACTOR * angleReward + SPEED_REWARD_FACTOR * speedReward, // TODO: can multiply?
+                    x == SimulationState.LandedOnLandingZone => DISTANCE_REWARD_FACTOR * distanceReward + ANGLE_REWARD_FACTOR * angleReward + SPEED_REWARD_FACTOR * speedReward,
                 _ => 0
             };
         }
